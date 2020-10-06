@@ -1,4 +1,4 @@
-package com.ng.financialliteracy.config;
+package com.stockmarket.financialliteracy.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
