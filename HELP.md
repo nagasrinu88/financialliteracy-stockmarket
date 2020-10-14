@@ -30,5 +30,13 @@ The following guides illustrate how to use some features concretely:
 ### Additional Links
 These additional references should also help you:
 
+### Install JDK 11
+
+#### Installing on Ubuntu
+* sudo apt-get install openjdk-11-jdk
+* sudo update-java-alternatives --list
+* sudo update-alternatives --config java
+* sudo update-alternatives --config javac
+
 * [Gradle Build Scans – insights for your project's build](https://scans.gradle.com#gradle)
 
