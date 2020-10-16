@@ -10,4 +10,6 @@ import java.util.List;
 public interface UserRepository extends Neo4jRepository<User, Long> {
     @Query(value = "MATCH (c: Company) <- [:WATCHLIST] - (:User {userName: $userName}) RETURN c")
     List<Company> getAllWatchListCompanies(String userName);
+
+    User findByEmail(String email);
 }
