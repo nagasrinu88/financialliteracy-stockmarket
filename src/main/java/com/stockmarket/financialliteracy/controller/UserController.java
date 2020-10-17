@@ -1,11 +1,12 @@
 package com.stockmarket.financialliteracy.controller;
 
 import com.stockmarket.financialliteracy.model.Company;
-import com.stockmarket.financialliteracy.model.DailySecurityPrice;
-import com.stockmarket.financialliteracy.service.DailySecurityPriceService;
+import com.stockmarket.financialliteracy.model.ListedSecurity;
 import com.stockmarket.financialliteracy.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,8 +21,6 @@ public class UserController {
 
     private final UserService userService;
 
-    private final DailySecurityPriceService dailySecurityPriceService;
-
 
     @GetMapping(value = "{userName}/watchlistCompanies")
     @Operation(description = "Get all watchList companies")
@@ -29,11 +28,12 @@ public class UserController {
         return userService.getAllWatchListCompanies(userName);
     }
 
-    //TODO Remove this
-    @GetMapping(value = "/prices")
-    @Operation(description = "Get all Prices")
-    public List<DailySecurityPrice> getPrices() {
-        return dailySecurityPriceService.getPrices();
-    }
+    @GetMapping(value = "watchlist/listedSecurities")
+    @Operation(description = "Get all Listed Securities")
+    public List<ListedSecurity> getAllListedSecurities(@RequestParam("searchStr") String searchStr) {
+        if (StringUtils.hasText(searchStr) && searchStr.length() > 1) {
 
+        }
+        return userService.getAllListedSecurities(searchStr);
+    }
 }

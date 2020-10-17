@@ -56,6 +56,15 @@ TTL_TRD_QNTY integer,
 DELIV_QTY integer,
 DELIV_PER numeric(6,2)
 );
+
+CREATE table if not exists public.LISTED_SECURITY (
+	SYMBOL varchar(50) NULL,
+	COMPANY_NAME varchar(200) null,
+	SERIES varchar(10) NULL,
+	EXCHANGE varchar(3) null,
+	CONSTRAINT LISTED_SECURITIES_PKEY PRIMARY KEY (SYMBOL)
+);
+
 "
 docker exec -it postgresDB sh -c "psql -U postgres -d postgres -c \"$POSTGRES_SQL\" ";
 

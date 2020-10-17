@@ -3,6 +3,7 @@ package com.stockmarket.financialliteracy.util;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.opencsv.exceptions.CsvValidationException;
 import com.stockmarket.financialliteracy.model.DailySecurityPrice;
+import com.stockmarket.financialliteracy.model.ListedSecurity;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -19,10 +20,19 @@ public class CSVParserUtil {
 
     private final static ObjectMapper mapper = new ObjectMapper();
 
-    private static List<Map<String, String>> parseCSVFileAsMap(InputStream stream) throws CsvValidationException {
+    private static List<Map<String, String>> parseCSVFileAsMap(InputStream stream, Map<String, String> modifyHeaders) throws CsvValidationException {
         try (BufferedReader br = new BufferedReader(new InputStreamReader(stream))) {
             String[] headers = br.readLine().split(COMMA_TRIM_SPLIT_REGREX);
 
+            if (Objects.nonNull(modifyHeaders) && !modifyHeaders.isEmpty()) {
+                List<String> headersList = Arrays.asList(headers);
+                modifyHeaders.keySet().stream().forEach(key -> {
+                    int index = headersList.indexOf(key);
+                    if (index > -1) {
+                        headers[index] = modifyHeaders.get(key);
+                    }
+                });
+            }
             return br.lines()
                     .map(row -> row.split(COMMA_TRIM_SPLIT_REGREX))
                     .map(column -> IntStream.range(0, column.length)
@@ -55,12 +65,12 @@ public class CSVParserUtil {
     }
 
     public static <T> List<T> parseCSVFileAsObject(InputStream stream, final Class<T> clazz, List<Map<String, String>> invalidRecords) throws CsvValidationException {
-        List<Map<String, String>> entries = parseCSVFileAsMap(stream);
+        List<Map<String, String>> entries = parseCSVFileAsMap(stream, null);
         return parseMapAsObject(entries, clazz, invalidRecords);
     }
 
     public static List<DailySecurityPrice> parseCSVFileAsDailySecurityPrices(InputStream stream, List<Map<String, String>> invalidRecords) throws CsvValidationException {
-        List<Map<String, String>> entries = parseCSVFileAsMap(stream);
+        List<Map<String, String>> entries = parseCSVFileAsMap(stream, null);
 
         List<String> validSeries = Arrays.asList(SERIES_BE, SERIES_EQ);
         entries = entries.stream().filter(entry -> validSeries.contains(entry.get(SERIES).toUpperCase()))
@@ -74,4 +84,13 @@ public class CSVParserUtil {
 
         return parseMapAsObject(entries, DailySecurityPrice.class, invalidRecords);
     }
+
+    public static List<ListedSecurity> parseCSVFileAsListedSecurities(InputStream stream, List<Map<String, String>> invalidRecords) throws CsvValidationException {
+        Map<String, String> modifyHeaders = new HashMap<>();
+        modifyHeaders.put("NAME OF COMPANY", "COMPANY_NAME");
+        List<Map<String, String>> entries = parseCSVFileAsMap(stream, modifyHeaders);
+        return parseMapAsObject(entries, ListedSecurity.class, invalidRecords);
+    }
+
+
 }
