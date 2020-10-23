@@ -65,6 +65,19 @@ CREATE table if not exists public.LISTED_SECURITY (
 	CONSTRAINT LISTED_SECURITIES_PKEY PRIMARY KEY (SYMBOL)
 );
 
+CREATE TABLE if not exists public.user_credential (
+        id serial NOT NULL,
+        name varchar(200) NULL,
+        email varchar(200) not NULL,
+        password varchar(200) NULL,
+        image_url varchar(200) NULL,
+        provider varchar(20) not NULL,
+        role varchar(20) not NULL,
+        CONSTRAINT user_credential_email_key UNIQUE (email),
+        CONSTRAINT user_credential_pkey PRIMARY KEY (id)
+);
+
+
 "
 docker exec -it postgresDB sh -c "psql -U postgres -d postgres -c \"$POSTGRES_SQL\" ";
 

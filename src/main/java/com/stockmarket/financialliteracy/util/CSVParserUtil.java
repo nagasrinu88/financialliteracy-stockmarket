@@ -2,8 +2,8 @@ package com.stockmarket.financialliteracy.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.opencsv.exceptions.CsvValidationException;
-import com.stockmarket.financialliteracy.model.DailySecurityPrice;
-import com.stockmarket.financialliteracy.model.ListedSecurity;
+import com.stockmarket.financialliteracy.entity.DailySecurityPrice;
+import com.stockmarket.financialliteracy.entity.ListedSecurity;
 
 import java.io.BufferedReader;
 import java.io.InputStream;

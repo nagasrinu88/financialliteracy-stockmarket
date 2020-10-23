@@ -1,4 +1,4 @@
-package com.stockmarket.financialliteracy.model;
+package com.stockmarket.financialliteracy.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
