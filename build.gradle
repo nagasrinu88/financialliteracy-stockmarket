@@ -6,7 +6,7 @@ plugins {
 
 group = 'com.stockmarket'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
+sourceCompatibility = '8'
 
 configurations {
 	compileOnly {
@@ -27,18 +27,23 @@ dependencies {
 
 	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-webflux'
-	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+
+	implementation 'org.springframework.security:spring-security-oauth2-client'
+
+	implementation "io.jsonwebtoken:jjwt:${jjwtVersion}"
+
+	implementation "com.google.api-client:google-api-client:${googleApiClientVersion}"
+	implementation "com.google.auth:google-auth-library-oauth2-http:${googleAuthLibraryOauth2HttpVersion}"
+
 	implementation "org.springdoc:springdoc-openapi-ui:${swagger}"
 	implementation "com.opencsv:opencsv:${openCSV}"
 
 	runtimeOnly "org.postgresql:postgresql"
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-//	runtimeOnly 'org.postgresql:postgresql'
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 	annotationProcessor 'org.projectlombok:lombok'
-//	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}

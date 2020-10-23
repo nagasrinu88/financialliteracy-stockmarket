@@ -1,7 +1,7 @@
 package com.stockmarket.financialliteracy.service;
 
-import com.stockmarket.financialliteracy.model.DailySecurityPrice;
-import com.stockmarket.financialliteracy.model.ListedSecurity;
+import com.stockmarket.financialliteracy.entity.DailySecurityPrice;
+import com.stockmarket.financialliteracy.entity.ListedSecurity;
 import com.stockmarket.financialliteracy.repository.postgres.DailySecurityPriceRepository;
 import com.stockmarket.financialliteracy.repository.postgres.ListedSecurityRepository;
 import lombok.AllArgsConstructor;

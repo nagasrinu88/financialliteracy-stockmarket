@@ -1,6 +1,6 @@
 package com.stockmarket.financialliteracy.repository.postgres;
 
-import com.stockmarket.financialliteracy.model.ListedSecurity;
+import com.stockmarket.financialliteracy.entity.ListedSecurity;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 

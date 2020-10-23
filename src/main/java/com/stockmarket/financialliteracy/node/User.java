@@ -1,4 +1,4 @@
-package com.stockmarket.financialliteracy.model;
+package com.stockmarket.financialliteracy.node;
 
 import lombok.Builder;
 import lombok.Data;
