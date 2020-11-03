@@ -5,6 +5,7 @@ import com.stockmarket.financialliteracy.service.CompanyService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,10 +25,10 @@ public class CompanyController {
 
     @GetMapping(value = "/listedSecurities")
     @Operation(description = "Get all Listed Securities")
-    public List<ListedSecurity> getAllListedSecurities(@RequestParam("searchStr") String searchStr) {
+    public ResponseEntity getAllListedSecurities(@RequestParam("searchStr") String searchStr) {
         if (StringUtils.hasText(searchStr) && searchStr.length() < 2) {
-            return Collections.emptyList();
+            return ResponseEntity.ok().build();
         }
-        return companyService.getAllListedSecurities(searchStr);
+        return ResponseEntity.ok(companyService.getAllListedSecurities(searchStr));
     }
 }

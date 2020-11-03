@@ -20,6 +20,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
+import org.springframework.web.cors.CorsConfiguration;
+
 
 @Configuration
 @EnableWebSecurity
@@ -32,6 +34,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
+    @Autowired
+    private CorsConfiguration corsConfiguration;
 
     @Bean
     public JWTTokenAuthenticationFilter tokenAuthenticationFilter() {
@@ -75,10 +79,35 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
+    @Bean
+    public CorsConfiguration corsConfiguration() {
+        CorsConfiguration cors = new CorsConfiguration();
+        List list = new ArrayList<String>();
+        list.add("http://localhost:3000");
+        list.add("http://0.0.0.0:3000");
+        list.add("http://localhost:8081");
+        list.add("http://0.0.0.0:8081");
+
+        cors.setAllowedOrigins(list);
+
+        List methods = new ArrayList<String>();
+        methods.add("*");
+        cors.setAllowedMethods(methods);
+
+        List headers = new ArrayList<String>();
+        headers.add("*");
+        cors.setAllowedHeaders(headers);
+        return cors;
+    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-
+                .cors()
+                .configurationSource(request -> {
+                    return corsConfiguration;
+                })
+                .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
@@ -88,6 +117,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
                 .and()
                 .authorizeRequests()
+//                TODO: added below line for UI should be removed once authorization is done
+                .antMatchers("/**").permitAll()
                 .antMatchers("/company/**").permitAll()
                 .antMatchers("/api/**").permitAll()
                 .antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
@@ -101,6 +132,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.css",
                         "/**/*.js").permitAll()
                 .antMatchers("/api-docs/**", "/configuration/**", "/swagger*/**", "/webjars/**").permitAll()
+
                 .anyRequest()
                 .authenticated();
 
