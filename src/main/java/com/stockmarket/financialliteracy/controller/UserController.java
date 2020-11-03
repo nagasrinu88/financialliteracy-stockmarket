@@ -1,13 +1,14 @@
 package com.stockmarket.financialliteracy.controller;
 
-import com.stockmarket.financialliteracy.model.Company;
-import com.stockmarket.financialliteracy.model.DailySecurityPrice;
-import com.stockmarket.financialliteracy.service.DailySecurityPriceService;
+import com.stockmarket.financialliteracy.node.Company;
+import com.stockmarket.financialliteracy.security.CurrentUser;
+import com.stockmarket.financialliteracy.security.UserPrincipal;
 import com.stockmarket.financialliteracy.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,20 +21,10 @@ public class UserController {
 
     private final UserService userService;
 
-    private final DailySecurityPriceService dailySecurityPriceService;
-
-
-    @GetMapping(value = "{userName}/watchlistCompanies")
-    @Operation(description = "Get all watchList companies")
-    public List<Company> getAllWatchListCompanies(@PathVariable String userName) {
-        return userService.getAllWatchListCompanies(userName);
+    @GetMapping(value = "/watchlistCompanies")
+    @Operation(description = "Get all watchList companies", security = {@SecurityRequirement(name = "bearer-key")})
+    public List<Company> getAllWatchListCompanies(@Parameter(hidden = true) @CurrentUser UserPrincipal userPrincipal) {
+        String email = userPrincipal.getEmail();
+        return userService.getAllWatchListCompanies(email);
     }
-
-    //TODO Remove this
-    @GetMapping(value = "/prices")
-    @Operation(description = "Get all Prices")
-    public List<DailySecurityPrice> getPrices() {
-        return dailySecurityPriceService.getPrices();
-    }
-
 }
